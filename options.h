@@ -9,4 +9,6 @@ void deleteOption(char * servername,int contentlength,char * connection,char * c
 
 void notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype); 
 
+void notAnOption();
+
 #endif

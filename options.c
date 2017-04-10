@@ -101,3 +101,10 @@ void notImplementedOption(char * servername,char * connection,char * contenttype
     }
 
 }
+
+void notAnOption(){
+
+    printf("HTTP/1.1 406 Not Acceptable\n");
+
+}
+
