@@ -111,7 +111,7 @@ void getFileTYpe(char* header, char* result){
 
 }
 
-char test[1024];
+char test[100000];
 
 // function prototype for reversing func.
 /* Server with Internet stream sockets */
@@ -201,8 +201,8 @@ char filetype[25];
 			getFileTYpe(buf,filetype);
 			char  *type;
 			defineContentType(filetype,&type);
-			printf("sellara\n");
-             getOption("close",type,path);
+			// printf("sellara\n");
+             getOption(test,"close",type,path);
 
                // printf("aelllllll%d\n",filetype[4] );
 				printf("Read string: %s\n", buf);

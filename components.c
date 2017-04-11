@@ -1,105 +1,100 @@
 #include "components.h"
+#include "options.h"
+#include "lib.h"
+// void defineRequest(char* requestOption,char * servername,int contentlength,char * connection,char * contenttype,char  * requestitem){
 
-void defineRequest(char* requestOption,char * servername,int contentlength,char * connection,char * contenttype,char  * requestitem){
-
-char * requestOption;
 
 
-if(strcmp(requestOption,"OPTIONS"){
+// if(strcmp(requestOption,"OPTIONS")){
 
-   notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype);
+// notImplementedOption( servername,  connection,contenttype);
+// }
+// else if(strcmp(requestOption,"GET")){
 
-}
-else if(strcmp(requestOption,"GET"){
+//    getOption(servername, contentlength, connection,contenttype, requestitem);
 
-   getOption(char * servername,int contentlength,,char * contenttype,char * requestitem);
+// }
+// else if(strcmp(requestOption,"HEAD")){
 
-}
-else if(strcmp(requestOption,"HEAD"){
+//    headOption( servername, contentlength, connection, contenttype, requestitem);
 
-   headOption(char * servername,int contentlength,char * connection,char * contenttype,char  * requestitem);
+// }
+// else if(strcmp(requestOption,"POST")){
 
-}
-else if(strcmp(requestOption,"POST"){
+//    notImplementedOption( servername,  connection,contenttype);
 
-   notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype);
+// }
+// else if(strcmp(requestOption,"PUT")){
 
-}
-else if(strcmp(requestOption,"PUT"){
+// notImplementedOption( servername,  connection,contenttype);}
+// else if(strcmp(requestOption,"DELETE")){
 
-   notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype);
+//    deleteOption( servername, contentlength, connection, contenttype, requestitem);
 
-}
-else if(strcmp(requestOption,"DELETE"){
+// }
+// else if(strcmp(requestOption,"TRACE")){
 
-   deleteOption(char * servername,int contentlength,char * connection,char * contenttype,char  * requestitem);
+// notImplementedOption( servername,  connection,contenttype);
+// }
+// else if(strcmp(requestOption,"CONNECT")){
 
-}
-else if(strcmp(requestOption,"TRACE"){
+// notImplementedOption( servername,  connection,contenttype);
+// }else if(strcmp(requestOption,"end")){
 
-   notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype);
+//    exit(0);
 
-}
-else if(strcmp(requestOption,"CONNECT"){
+// }else{
 
-   notImplementedOption(char * servername,int contentlength,char * connection,char * contenttype);
+//    notAnOption();
+// }
 
-}else if(strcmp(requestOption,"end"){
+// }
 
-   exit(0);
+void defineContentType( char* extension ,char** type){
 
-else{
-
-   notAnOption();
-}
-
-}
-
-char* defineContentType(const char* extension){
-
-    if (extension != NULL){
-        if ((strcmp(extension, ".txt") || strcmp(extension, ".TXT")) == 0)
+    // if (extension != NULL){
+        if (     (strcmp(extension, ".txt") && strcmp(extension, ".TXT")    ) == 0)
         {
-            return "text/plain"; 
+            *type ="text/plain"; 
         }
-        if ((strcmp(extension, ".sed") || strcmp(extension, ".SED")) == 0)
+        else if ((strcmp(extension, ".sed") && strcmp(extension, ".SED")) == 0)
         {
-            return "text/plain"; 
+            *type = "text/plain"; 
         }
-        if ((strcmp(extension, ".awk") || strcmp(extension, ".AWK")) == 0)
+        else if ((strcmp(extension, ".awk") && strcmp(extension, ".AWK")) == 0)
         {
-            return "text/plain";      
+            *type = "text/plain";      
         }
-        if ((strcmp(extension, ".c") || strcmp(extension, ".C")) == 0)
+        else if ((strcmp(extension, ".c") && strcmp(extension, ".C")) == 0)
         {
-            return "text/plain";      
+            *type = "text/plain";      
         }
-        if ((strcmp(extension, ".h") || strcmp(extension, ".H")) == 0)
+        else if ((strcmp(extension, ".h") && strcmp(extension, ".H")) == 0)
         {
-            return "text/plain";     
+            *type = "text/plain";     
         }
-        if ((strcmp(extension, ".jpeg") || strcmp(extension, ".JPEG")) == 0)
+        else if ((strcmp(extension, ".jpeg") && strcmp(extension, ".JPEG")) == 0)
         {
-            return "image/jpeg"; 
+            *type = "image/jpeg"; 
         }
-        if ((strcmp(extension, ".jpg") || strcmp(extension, ".JPG")) == 0)
+        else if ((strcmp(extension, ".jpg") && strcmp(extension, ".JPG")) == 0)
         {
-            return "image/jpeg"; 
+            *type = "image/jpeg"; 
         }
-        if ((strcmp(extension, ".gif") || strcmp(extension, ".GIF")) == 0)
+        else if ((strcmp(extension, ".gif") && strcmp(extension, ".GIF")) == 0)
         {
-            return "image/gif"; 
+            *type = "image/gif"; 
         }
-        if ((strcmp(extension, ".pdf") || strcmp(extension, ".PDF")) == 0)
+        else if ((strcmp(extension, ".pdf") && strcmp(extension, ".PDF")) == 0)
         {
-            return "application/pdf"; 
+            *type = "application/pdf"; 
         }
         else
         {
-            return "application/octet-stream"; 
+            *type = "application/octet-stream"; 
         }
   
-    }
-    return NULL;
+    // }
+    // *type = "NO";
 }
 

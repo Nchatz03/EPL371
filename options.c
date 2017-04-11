@@ -1,7 +1,7 @@
 #include "options.h"
 #include "lib.h"
 
-void getOption(char * connection,char * contenttype,char * requestitem){
+void getOption(char * test,char * connection,char * contenttype,char * requestitem){
   // printf("nikolas\n");
 
 
@@ -11,13 +11,6 @@ void getOption(char * connection,char * contenttype,char * requestitem){
 	// sprintf(test, "%sConnection: keep-alive\r\n", test);
 	// sprintf(test, "%sContent-type: text/html\r\n\r\n", test);
 
-
-
-
-    
-
-
-;
 
 
     FILE * item=NULL;
@@ -33,25 +26,28 @@ void getOption(char * connection,char * contenttype,char * requestitem){
             size++;
     	}
     	buff[i]='\0';
-    	printf("HTTP/1.1 200 OK\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: %d\n",size);
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
+    	sprintf(test, "HTTP/1.0 200 OK\r\n");
+    	sprintf(test, "%sServer: Sysstatd Web Server\r\n", test);
+    	// printf("HTTP/1.1 200 OK\n");
+    	// printf("Server: %s\n",servername);
+
+    	sprintf(test, "%sContent-Length: %d\n\r",test,size);
+    	sprintf(test,"%sConnection: %s\n\r",test,connection);
+    	sprintf(test,"%sContent-Type: %s\n",test,contenttype);
+    	//printf("\n");
 
     	
-    	printf("%s\n",buff);
+    	sprintf(test,"%s%s\n\r",test,buff);
     	fclose(item);
         
     }else{
-    	printf("HTTP/1.1 404 Not Found\n" );
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: 20\n");
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
-    	printf("Document not found!\n");
+    	sprintf(test,"HTTP/1.1 404 Not Found\n\r" );
+    	sprintf(test,"%sServer: Sysstatd Web Server\n\r",test);
+    	sprintf(test,"%sContent-Length: 20\n\r",test);
+    	sprintf(test,"%sConnection: %s\n\r",test,connection);
+    	sprintf(test,"%sContent-Type: %s\n\r",test,contenttype);
+    	// sprintf(test,"\n");
+    	sprintf(test,"%sDocument not found!\n\r",test);
     }
 
 
