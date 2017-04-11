@@ -1,7 +1,7 @@
 #include "options.h"
 #include "lib.h"
 
-void getOption(char * connection,char * contenttype,char * requestitem){
+void getOption(char * test,char * connection,char * contenttype,char * requestitem){
   // printf("nikolas\n");
 
 
@@ -11,13 +11,6 @@ void getOption(char * connection,char * contenttype,char * requestitem){
 	// sprintf(test, "%sConnection: keep-alive\r\n", test);
 	// sprintf(test, "%sContent-type: text/html\r\n\r\n", test);
 
-
-
-
-    
-
-
-;
 
 
     FILE * item=NULL;
@@ -33,25 +26,28 @@ void getOption(char * connection,char * contenttype,char * requestitem){
             size++;
     	}
     	buff[i]='\0';
-    	printf("HTTP/1.1 200 OK\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: %d\n",size);
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
+    	sprintf(test, "HTTP/1.0 200 OK\r\n");
+    	sprintf(test, "%sServer: My_server\r\n", test);
+    	// printf("HTTP/1.1 200 OK\n");
+    	// printf("Server: %s\n",servername);
+
+    	sprintf(test, "%sContent-Length: %d\n\r",test,size);
+    	sprintf(test,"%sConnection: %s\n\r",test,connection);
+    	sprintf(test,"%sContent-Type: %s\n",test,contenttype);
+    	//printf("\n");
 
     	
-    	printf("%s\n",buff);
+    	sprintf(test,"%s%s\n\r",test,buff);
     	fclose(item);
         
     }else{
-    	printf("HTTP/1.1 404 Not Found\n" );
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: 20\n");
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
-    	printf("Document not found!\n");
+    	sprintf(test,"HTTP/1.1 404 Not Found\n\r" );
+    	sprintf(test,"%sServer: My_server\n\r",test);
+    	sprintf(test,"%sContent-Length: 20\n\r",test);
+    	sprintf(test,"%sConnection: %s\n\r",test,connection);
+    	sprintf(test,"%sContent-Type: %s\n\r",test,contenttype);
+    	// sprintf(test,"\n");
+    	sprintf(test,"%sDocument not found!\n\r",test);
     }
 
 
@@ -59,7 +55,7 @@ void getOption(char * connection,char * contenttype,char * requestitem){
 
 }
 
-void headOption(char * servername,int contentlength,char * connection,char * contenttype,char * requestitem){
+void headOption(char * stream,char * connection,char * contenttype,char * requestitem){
     
         FILE * item;
     	
@@ -67,27 +63,27 @@ void headOption(char * servername,int contentlength,char * connection,char * con
 
 	if(item!=NULL){
 		fclose(item);
-    	printf("HTTP/1.1 200 OK\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: %d\n",contentlength);
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
+    	sprintf(stream,"HTTP/1.1 200 OK\n\r");
+    	sprintf(stream,"%sServer: My_server \n\r",stream);
+    	sprintf(stream,"%sContent-Length: %d\n",stream,30);
+    	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
+    	sprintf(stream,"%sContent-Type: %s\n\r",stream,contenttype);
+    	//sprintf("\n");
 
         
     }else{
-    	printf("HTTP/1.1 404 Not Found\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: 20\n");
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
-    	printf("Document not found!\n");
+    	sprintf(stream,"HTTP/1.1 404 Not Found\n\r");
+    	sprintf(stream,"%sServer: My_server\n\r",stream);
+    	sprintf(stream,"%sContent-Length: 20\n\r",stream);
+    	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
+    	sprintf(stream,"%sContent-Type: %s\n\r",stream,contenttype);
+    	sprintf(stream,"%s\n\r",stream);
+    	sprintf(stream,"%sDocument not found!\n\r",stream);
     }
 
 }
 
-void deleteOption(char * servername,int contentlength,char * connection,char * contenttype,char * requestitem){
+void deleteOption(char * stream, char * connection,char * contenttype,char * requestitem){
 
 
 	int errorflag;
@@ -95,44 +91,45 @@ void deleteOption(char * servername,int contentlength,char * connection,char * c
 	errorflag = remove(requestitem);
 
     if(errorflag == 0){
-        printf("HTTP/1.1 204 No Content\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: %d\n",contentlength);
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
+        sprintf(stream,"HTTP/1.1 204 No Content\n\r");
+    	sprintf(stream,"%sServer: My_server\n\r",stream);
+    	sprintf(stream,"%sContent-Length: 16\n\r",stream);
+    	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
+    	sprintf(stream,"%sContent-Type: %s\n\r",stream,contenttype);
+    	sprintf(stream,"%s\n\r",stream);
+    	sprintf(stream,"%sDocument deleted\n\r",stream);
     }else{
 
-    	printf("HTTP/1.1 404 Not Found\n" );
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: 20\n");
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
-    	printf("Document not found!\n");
+    	sprintf(stream,"%sHTTP/1.1 404 Not Found\n\r" );
+    	sprintf(stream,"%sServer: My_server\n\r",stream);
+    	sprintf(stream,"%sContent-Length: 20\n\r",stream);
+    	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
+    	sprintf(stream,"%sContent-Type: %s\n\r",stream,contenttype);
+    	sprintf(stream,"%s\n\r",stream);
+    	sprintf(stream,"%sDocument not found!\n\r",stream);
 
     }
 
 
 }
 
-void notImplementedOption(char * servername,char * connection,char * contenttype){
+void notImplementedOption(char *stream ,char * connection,char * contenttype){
     
-        printf("HTTP/1.1 501 No Implemented\n");
-    	printf("Server: %s\n",servername);
-    	printf("Content-Length: 24\n");
-    	printf("Connection: %s\n",connection);
-    	printf("Content-Type: %s\n",contenttype);
-    	printf("\n");
-    	printf("Method not implemented\n");
+        sprintf(stream,"HTTP/1.1 501 No Implemented\n\r");
+    	sprintf(stream,"%sServer: My_server\n\r",stream);
+    	sprintf(stream,"%sContent-Length: 24\n\r",stream);
+    	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
+    	sprintf(stream,"%sContent-Type: %s\n\r",stream,contenttype);
+    	sprintf(stream,"%s\n\r",stream);
+    	sprintf(stream,"%sMethod not implemented\n\r",stream);
 
     
 
 }
 
-void notAnOption(){
+void notAnOption(char* stream){
 
-    printf("HTTP/1.1 406 Not Acceptable\n");
+    sprintf(stream,"HTTP/1.1 406 Not Acceptable\n\r");
 
 }
 

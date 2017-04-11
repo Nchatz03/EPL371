@@ -1,8 +1,8 @@
 #ifndef _COMPONENTS_H
 #define _COMPONENTS_H
 
-void defineRequest(char* requestOption,char * servername,int contentlength,char * connection,char * contenttype,char  * requestitem);
+void defineRequest(char * stream,char* requestOption,char * connection,char * contenttype,char  * requestitem);
 
-char* defineContentType(const char* extension);
+void defineContentType( char* extension ,char** type);
 
 #endif

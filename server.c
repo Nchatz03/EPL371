@@ -15,6 +15,7 @@
 #include <string.h>
 #include "options.h"
 #include "lib.h"
+#include "components.h"
 void reverse(char *);
 
 // void getOption(char * servername,int contentlength,char * connection,char * contenttype,char * requestitem){
@@ -111,7 +112,22 @@ void getFileTYpe(char* header, char* result){
 
 }
 
-char test[1024];
+
+void getClientOption(char * header, char * result)
+{
+
+char* p=header;
+while(*p!=' '){
+	*result=*p;
+	result++;
+	p++;
+}
+*result='\0';
+
+}
+
+
+char test[100000];
 
 // function prototype for reversing func.
 /* Server with Internet stream sockets */
@@ -124,6 +140,7 @@ main(int argc, char *argv[]) {
    char path[25];
 char filename[25];
 char filetype[25];
+char clientoption[25];
 // char sendd[10000];
 
 	// sprintf(test, "HTTP/1.0 200 OK\r\n");    //line:netp:servestatic:beginserve
@@ -196,13 +213,28 @@ char filetype[25];
 					perror("read");
 					exit(1);
 				}
+			getClientOption(buf, clientoption)	;
 			getPath(buf,path);
 			getFileName(buf,filename);
 			getFileTYpe(buf,filetype);
 			char  *type;
 			defineContentType(filetype,&type);
-			printf("sellara\n");
-             getOption("close",type,path);
+
+             defineRequest(test, clientoption,"closed",type,path);
+
+			// printf("sellara\n");
+
+			///////////////////////////////////////////////////////
+            // getOption(test,"close",type,path);
+            ////////////////////////////////////////////////////////
+
+
+            /////////////////////////////////////////////////////
+            //deleteOption("server",25,"closed",type,path);
+            ///////////////////////////////////////////////////////
+
+
+//headOption("nikolas",25,"close",type,path);
 
                // printf("aelllllll%d\n",filetype[4] );
 				printf("Read string: %s\n", buf);
