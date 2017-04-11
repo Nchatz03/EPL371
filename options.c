@@ -146,7 +146,7 @@ void deleteOption(char * stream, char * connection,char * contenttype,char * req
     	sprintf(stream,"%s\n\r",stream);
     	sprintf(stream,"%sDocument deleted\n\r",stream);
     }else{
-    	sprintf(stream,"%sHTTP/1.1 404 Not Found\n\r" );
+    	sprintf(stream,"HTTP/1.1 404 Not Found\n\r" );
     	sprintf(stream,"%sServer: My_server\n\r",stream);
     	sprintf(stream,"%sContent-Length: 20\n\r",stream);
     	sprintf(stream,"%sConnection: %s\n\r",stream,connection);
@@ -253,7 +253,7 @@ printf("\n");
 printf("\n");
 printf("\n");
 printf("Press enter to continue\n");
-char enter = 0;
+ enter = 0;
 while (enter != '\r' && enter != '\n') { enter = getchar(); }
 printf("|-------------------------------------------------------------------------------------------|\n");
 printf("|                                         2ND TRY                                           |\n");
@@ -301,7 +301,7 @@ printf("\n");
 printf("\n");
 printf("\n");
 printf("Press enter to continue\n");
-char enter = 0;
+ enter = 0;
 while (enter != '\r' && enter != '\n') { enter = getchar(); }
 printf("|-------------------------------------------------------------------------------------------|\n");
 printf("|                                         1ST TRY                                           |\n");
@@ -323,7 +323,7 @@ printf("\n");
 printf("\n");
 printf("\n");
 printf("Press enter to continue\n");
-char enter = 0;
+ enter = 0;
 while (enter != '\r' && enter != '\n') { enter = getchar(); }
 printf("|-------------------------------------------------------------------------------------------|\n");
 printf("|                                         2ND TRY                                           |\n");
@@ -375,7 +375,7 @@ printf("\n");
 printf("\n");
 printf("\n");
 printf("Press enter to continue\n");
-char enter = 0;
+ enter = 0;
 while (enter != '\r' && enter != '\n') { enter = getchar(); }
 printf("|-------------------------------------------------------------------------------------------|\n");
 printf("|                                         1ST TRY                                           |\n");
@@ -397,7 +397,7 @@ printf("\n");
 printf("\n");
 printf("\n");
 printf("Press enter to continue\n");
-char enter = 0;
+ enter = 0;
 while (enter != '\r' && enter != '\n') { enter = getchar(); }
 printf("|-------------------------------------------------------------------------------------------|\n");
 printf("|                                         2ND TRY                                           |\n");
@@ -423,7 +423,8 @@ printf("\n");
 
 
 
-
+FILE *file=fopen("debug.txt","w");
+printf("The file debug.txt is now recreated\n" );
 
 
 
