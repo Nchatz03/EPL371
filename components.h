@@ -17,7 +17,7 @@
 *
 * @return int - if request is get to multistream .
 */
-int defineRequest(char* stream, char* requestoption, char* connection, char* contenttype, char* requestitem, char* body);
+int defineRequest(char* stream, char* requestoption, char* connection, char* contenttype, char* requestitem, char** body,int* size);
 
 /** @brief Define the requestet item type        
 *

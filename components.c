@@ -3,17 +3,20 @@
 #include "lib.h"
 
 
-int defineRequest(char* stream, char* requestoption,char* connection,char* contenttype,char* requestitem,char* body){
+int defineRequest(char* stream, char* requestoption,char* connection,char* contenttype,char* requestitem,char** body,int *size){
 
     #ifndef DEBUG
 
-    if(strcmp(requestoption,"OPTIONS")==0){
+    if(strcmp(requestoption,"") == 0){
+		notAnOption(stream);
+	}
+    else if(strcmp(requestoption,"OPTIONS")==0){
 
         notImplementedOption(stream,connection,contenttype);
     }
     else if(strcmp(requestoption,"GET")==0){
 
-   		getOption(stream,connection,contenttype,requestitem,body);
+   		getOption(stream,connection,contenttype,requestitem,body,size);
   		return 1;
 	}
 	else if(strcmp(requestoption,"HEAD")==0){
@@ -54,7 +57,13 @@ int defineRequest(char* stream, char* requestoption,char* connection,char* conte
 
 	#ifdef DEBUG
 
-    if(strcmp(requestoption,"OPTIONS")==0){
+
+
+    if(strcmp(requestoption,"") == 0){
+		printf("calling  -->   ");
+		printf("notAnOption(stream);\n");
+	}
+    else if(strcmp(requestoption,"OPTIONS")==0){
         
         printf("calling  -->   ");
         printf("notImplementedOption(stream,connection,contenttype);\n");
@@ -121,9 +130,16 @@ void defineContentType( char* extension ,char** type){
 
         #ifndef DEBUG
 
-        if ((strcmp(extension, ".txt") && strcmp(extension, ".TXT")) == 0)
+	    if(strcmp(extension,"") == 0){
+			exit(0);
+	    }
+        else if ((strcmp(extension, ".txt") && strcmp(extension, ".TXT")) == 0)
         {
             *type ="text/plain"; 
+        }
+         else if ((strcmp(extension, ".css") && strcmp(extension, ".CSS")) == 0)
+        {
+            *type = "text/css"; 
         }
         else if ((strcmp(extension, ".sed") && strcmp(extension, ".SED")) == 0)
         {
@@ -174,6 +190,10 @@ void defineContentType( char* extension ,char** type){
 
         #ifdef DEBUG
 
+
+	    if(strcmp(extension,"") == 0){
+			printf("exit(0)\n");
+	    }
         if ((strcmp(extension, ".txt") && strcmp(extension, ".TXT")) == 0)
         {
             printf("text/plain \n"); 
@@ -280,6 +300,7 @@ printf("char* contenttype = {static testing mode}\n");
 printf("char* requestitem = {debug.txt}\n");
 printf("char* body = {static testing mode}\n");
 /* Declaring Object Unit tests */
+int returnflag =0;
 char* stream = NULL;
 char* requestoption = "OPTIONS";
 char* connection = "TEST MODE";
@@ -524,7 +545,7 @@ printf("char* requestitem = {debug.txt}\n");
 printf("char* body = {static testing mode}\n");
 /* Declaring Object Unit tests */
 stream = NULL;
-requestoption = NULL;
+requestoption = "";
 connection = "TEST MODE";
 contenttype = "TEST MODE";
 requestitem = "debug.txt";
@@ -860,7 +881,7 @@ printf("/* Declaring Object Unit tests */\n");
 printf("char* extension = NULL \n");
 printf("char* type = {type}\n");
 /* Declaring Object Unit tests */
-extension = NULL;
+extension = "";
 type = "TEST MODE";
 defineContentType(extension,&type);
 printf("\n");

@@ -1,18 +1,3 @@
-/* File: 
- server.c
- */
-#include <sys/types.h> 
-/* For sockets */
-#include <sys/socket.h> 
-/* For sockets */
-#include <netinet/in.h> 
-/* For Internet sockets */
-#include <netdb.h> 
-/* For gethostbyaddr() */
-#include <stdio.h> 
-/* For I/O */
-#include <stdlib.h>
-#include <string.h>
 #include "options.h"
 #include "lib.h"
 #include "components.h"
@@ -53,81 +38,101 @@ void reverse(char *);
 
 // }
 
-void getPath(char* header, char* result){
-   char* p=header;
-   char* p1=result;
-   while(*p!='/'){
-   	p++;
-   }
-   char*pp =p+1;
-   while(*p!=' '){
-   	p++;
-   }
-   char* ppp=p;
-   
-   
-   while(pp!=ppp){
-   	*result=*pp;
-   	result++;
-   	pp++;
-   }
-   *result='\0';
+int getClientOption(char* header, char* result){
+
+if(*header<33){
+	*result='\0';
+	return 0;
 }
-
-void getFileName(char* header, char* result){
-  char* p=header;
-   char* p1=result;
-   while(*p!='.'){
-   	p++;
-   }
-   while(*p!='/'){
-   	p--;
-   }
-   p++;
-   while(*p!=' ')
-{
-	*p1=*p;
-	p1++;
-	p++;
-}
-*p1='\0';
-}
-
-
-
-void getFileTYpe(char* header, char* result){
- char temp[20];
- getFileName(header,temp);
- char* p=temp;
- while(*p!='.'){
- 	p++;
- } 
- // printf("%s",p);
-   while(*p!='\0'){
-   	*result=*p;
-   	result++;
-   	p++;
-   }
-   *result='\0';
-
-}
-
-
-void getClientOption(char * header, char * result)
-{
-
+else{
 char* p=header;
-while(*p!=' '){
+while( *p!=' '){
+	if(*p=='\0'){
+		return 0;
+	}
 	*result=*p;
-	result++;
 	p++;
+	result++;
 }
+
 *result='\0';
+return 1;
+}
 
 }
 
 
-char test[100000];
+
+int getPath(char* header, char* result){
+	char temp[40];
+  	char * resultcp=result;
+  	char* header2=header;
+  	if(getClientOption(header2,temp)){
+  		
+     	while(*header!=' '){
+     		header++;
+     	}
+     	header++;
+		if(*header!='/'){
+			*result='\0';
+			return 0;
+		}
+     	header++;
+     
+     	while(*header!=' '){
+            if(*header=='\0'){
+            	*resultcp='\0';
+            	return 0;
+            }
+     		*result=*header;
+     		result++;
+     		header++;
+     	}
+        
+     	*result='\0';
+     	return 1;   
+  	}
+  	else{
+  		*result='\0';
+  		return 0;
+  	}
+}
+
+
+int getType(char* header, char* result ){
+	char temp[100];
+	
+if(getPath(header,temp)){
+	char *p=temp;
+	char *p2=temp;
+   while(*p2!='\0'){
+   	p2++;
+   }
+   while(*p2!='.'){
+   		if(p2==p){
+   			*result='\0';
+   			return 0;
+   		}
+   		p2--;
+   }
+   
+   while(*p2!='\0'){
+   	*result=*p2;
+   	p2++;
+   	result++;
+   }
+   *result='\0';
+   return 1;
+
+}else{
+	*result='\0';
+	return 0;
+}
+
+}
+
+
+char test[200];
 
 // function prototype for reversing func.
 /* Server with Internet stream sockets */
@@ -141,14 +146,10 @@ main(int argc, char *argv[]) {
 char filename[25];
 char filetype[25];
 char clientoption[25];
-// char sendd[10000];
-
-	// sprintf(test, "HTTP/1.0 200 OK\r\n");    //line:netp:servestatic:beginserve
- //   	sprintf(test, "%sServer: Sysstatd Web Server\r\n", test);
- //   	sprintf(test, "%sContent-length: 211\r\n", test);
-	// sprintf(test, "%sConnection: keep-alive\r\n", test);
-	// sprintf(test, "%sContent-type: text/html\r\n\r\n", test);
-	// sprintf(test, "%s<html><head><title>It worked!!!</title></head><body><h1>Yes, It worked!!!</h1>Click at the image to see a sample text!<br><a href=“sample.txt”><img src=“sample.gif”></a></body></html>",test);
+// char body[1000000];
+char* body;
+int flag=0;
+int size;
 
 
 
@@ -208,45 +209,58 @@ char clientoption[25];
 			exit(1);
 		case 0: /* Child process */
 			do {
+	
 				bzero(buf, sizeof(buf)); /* Initialize buffer */
 				if (read(newsock, buf, sizeof(buf)) < 0) { /* Get message */
 					perror("read");
 					exit(1);
 				}
+
+
+			        for(int j=0;j<sizeof(clientoption);j++){
+    	clientoption[j]='\0';
+    }
+             for(int j=0;j<sizeof(path);j++){
+    	path[j]='\0';
+    }
+             for(int j=0;j<sizeof(filetype);j++){
+    	filetype[j]='\0';
+    }
+     	
 			getClientOption(buf, clientoption)	;
 			getPath(buf,path);
-			getFileName(buf,filename);
-			getFileTYpe(buf,filetype);
+			// getFileName(buf,filename);
+			getType(buf,filetype);
 			char  *type;
 			defineContentType(filetype,&type);
 
-             defineRequest(test, clientoption,"closed",type,path);
 
-			// printf("sellara\n");
+    
+            for(int j=0;j<sizeof(test);j++){
+    	test[j]='\0';
+    }
+     
+            flag= defineRequest(test, clientoption,"keep-alive",type,path,&body,&size);
 
-			///////////////////////////////////////////////////////
-            // getOption(test,"close",type,path);
-            ////////////////////////////////////////////////////////
-
-
-            /////////////////////////////////////////////////////
-            //deleteOption("server",25,"closed",type,path);
-            ///////////////////////////////////////////////////////
-
-
-//headOption("nikolas",25,"close",type,path);
-
-               // printf("aelllllll%d\n",filetype[4] );
 				printf("Read string: %s\n", buf);
 				reverse(buf); /* Reverse message */
-
+ 
 
 				if (write(newsock, test, sizeof(test)) < 0) {/* Send message */
 					perror("write");
 					exit(1);
 				}
+				
+                if (flag)
 
-			} while (strcmp(buf, "dne") != 0); /*Finish on "end" message*/
+                if (write(newsock, body, size) < 0) { //Send message 
+					perror("write");
+					exit(1);
+				}
+				// printf("%s\n","aellllllllllllll" );
+
+
+			} while (1); /*Finish on "end" message*/
 			close(newsock); /* Close socket */
 			exit(0);
 		} /* end of switch */
